@@ -255,3 +255,63 @@ https://www.mongodb.com/docs/manual/tutorial/query-documents/
                                 {"$exists", false},
                         }},
 	})
+
+## 其他API
+
+要看下具体语言的实现。
+
+### findAndModify
+```
+db.collection.findAndModify({
+    query: <document>,
+    sort: <document>,
+    remove: <boolean>,
+    update: <document or aggregation pipeline>, // Changed in MongoDB 4.2
+    new: <boolean>,
+    fields: <document>,
+    upsert: <boolean>,
+    bypassDocumentValidation: <boolean>,
+    writeConcern: <document>,
+    collation: <document>,
+    arrayFilters: [ <filterdocument1>, ... ],
+    let: <document> // Added in MongoDB 5.0
+});
+```
+
+- new: 是否返回最新的记录，第一条记录
+- upsert: 不存在则插入，下同
+
+### findOneAndUpdate
+```
+db.collection.findOneAndUpdate(
+   <filter>,
+   <update document or aggregation pipeline>, // Changed in MongoDB 4.2
+   {
+     projection: <document>,
+     sort: <document>,
+     maxTimeMS: <number>,
+     upsert: <boolean>,
+     returnDocument: <string>,
+     returnNewDocument: <boolean>,
+     collation: <document>,
+     arrayFilters: [ <filterdocument1>, ... ]
+   }
+)
+```
+
+### findOneAndReplace
+```
+db.collection.findOneAndReplace(
+   <filter>,
+   <replacement>,
+   {
+     projection: <document>,
+     sort: <document>,
+     maxTimeMS: <number>,
+     upsert: <boolean>,
+     returnDocument: <string>,
+     returnNewDocument: <boolean>,
+     collation: <document>
+   }
+)
+```
