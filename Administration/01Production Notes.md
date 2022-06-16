@@ -68,5 +68,27 @@ Run the following command to apply the setting:
 
     sudo sysctl -p
 
+## Recommended Configuration
 
+For the WiredTiger storage engines, consider the following recommendations:
 
+- Turn off atime for the storage volume containing the database files.
+- Adjust the ulimit settings for your platform according to the recommendations in the ulimit reference. Low ulimit values will negatively affect MongoDB when under heavy use and can lead to failed connections to MongoDB processes and loss of service.
+- Disable Transparent Huge Pages. MongoDB performs better with normal (4096 bytes) virtual memory pages. See Transparent Huge Pages Settings.
+- Disable NUMA in your BIOS. If that is not possible, see MongoDB on NUMA Hardware.
+- Configure SELinux for MongoDB if you are not using the default MongoDB directory paths or ports.See: Configure SELinux for MongoDB and Configure SELinux for MongoDB Enterprise for the required configuration.
+- Set the readahead setting between 8 and 32 regardless of storage media type (spinning disk, SSD, etc.).Higher readahead commonly benefits sequential I/O operations. Since MongoDB disk access patterns are generally random, using higher readahead settings provides limited benefit or potential performance degradation. As such, for optimal MongoDB performance, set readahead between 8 and 32, unless testing shows a measurable, repeatable, and reliable benefit in a higher readahead value.
+
+view tcp_keepalive_time:
+
+    sysctl net.ipv4.tcp_keepalive_time
+    cat /proc/sys/net/ipv4/tcp_keepalive_time
+
+change:
+
+    sudo sysctl -w net.ipv4.tcp_keepalive_time=<value>
+    echo <value> | sudo tee /proc/sys/net/ipv4/tcp_keepalive_time
+
+To persist the setting, add the following line to /etc/sysctl.conf, supplying a <value> in seconds, and reboot the machine:
+
+    net.ipv4.tcp_keepalive_time = <value>
